@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test App</title>
+    <meta name="description" content="Test app"/>
+    <meta name="viewport"
+          content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui"/>
+    <style>@-ms-viewport {
+        width: device-width;
+    }</style>
+    <link rel="stylesheet" href="../public/material.min.css">
+    <link rel="stylesheet" href="../public/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+</head>
+<body>
+
+<div id="pano"></div>
+
+<ul id="sceneList" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect scenes"
+    for="sceneListToggle">
+    <li class="mdl-menu__item scene" data-id="01-bad">01-bad</li>
+    <li class="mdl-menu__item scene" data-id="02-balkon">02-balkon</li>
+    <li class="mdl-menu__item scene" data-id="03-balkon">03-balkon</li>
+</ul>
+
+<div id="titleBar">
+    <h4 class="sceneName"></h4>
+</div>
+
+<button id="autorotateToggle" class="mdl-button mdl-js-button mdl-button--icon">
+    <i class="material-icons">360</i>
+</button>
+
+<button id="fullscreenToggle" class="mdl-button mdl-js-button mdl-button--icon">
+    <i class="material-icons">fullscreen</i>
+</button>
+
+<button id="sceneListToggle"
+        class="mdl-button mdl-js-button mdl-button--icon">
+    <i class="material-icons">more_vert</i>
+</button>
+
+<script src="../public/material.min.js"></script>
+<script src="../public/es5-shim.js"></script>
+<script src="../public/eventShim.js"></script>
+<script src="../public/classList.js"></script>
+<script src="../public/requestAnimationFrame.js"></script>
+<script src="../public/screenfull.min.js"></script>
+<script src="../public/bowser.min.js"></script>
+<script src="../public/marzipano.js"></script>
+
+<script src="data.js"></script>
+<script src="../public/index.js"></script>
+
+</body>
+</html>
