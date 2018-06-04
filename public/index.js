@@ -8,14 +8,18 @@
 
     // get dom elements
     var panoElement = document.querySelector('#pano');
+    var sceneListElement = document.querySelector("#sceneList");
     var sceneNameElement = document.querySelector('#titleBar .sceneName');
     var sceneElements = document.querySelectorAll('#sceneList .scene');
     var autorotateToggleElement = document.querySelector('#autorotateToggle');
     var fullscreenToggleElement = document.querySelector('#fullscreenToggle');
 
+    // set meta information
+    document.title = data.name;
+
     // test event listeners
-    panoElement.addEventListener('mousedown', function(e) {
-        var pressPosition = { x: e.clientX, y: e.clientY };
+    panoElement.addEventListener('mousedown', function (e) {
+        var pressPosition = {x: e.clientX, y: e.clientY};
         console.log(pressPosition);
         var scene = viewer.scene(); // get the current scene
         var view = scene.view();    // get the scene's view
@@ -73,10 +77,10 @@
     var viewer = new Marzipano.Viewer(panoElement, viewerOpts);
 
     // Create scenes.
-    var scenes = data.scenes.map(function (data) {
+    var scenes = data.scenes.map(function (sc) {
 
         // Create source.
-        var source = Marzipano.ImageUrlSource.fromString(data.name + ".jpg");
+        var source = Marzipano.ImageUrlSource.fromString(sc.src);
 
 // Create geometry.
         var geometry = new Marzipano.EquirectGeometry([{width: 4000}]);
@@ -93,19 +97,23 @@
         });
 
         // Create link hotspots.
-        data.linkHotspots.forEach(function (hotspot) {
+        sc.linkHotspots.forEach(function (hotspot) {
             var element = createLinkHotspotElement(hotspot);
             scene.hotspotContainer().createHotspot(element, {yaw: hotspot.yaw, pitch: hotspot.pitch});
         });
 
         // Create info hotspots.
-        data.infoHotspots.forEach(function (hotspot) {
+        sc.infoHotspots.forEach(function (hotspot) {
             var element = createInfoHotspotElement(hotspot);
             scene.hotspotContainer().createHotspot(element, {yaw: hotspot.yaw, pitch: hotspot.pitch});
         });
 
+        // add sceneListElements for list
+        sceneListElement.insertAdjacentHTML('beforeend', '<li class="mdl-menu__item scene" data-id="' + sc.id + '">' + sc.name + '</li>');
+        sceneElements = document.querySelectorAll('#sceneList .scene');
+
         return {
-            data: data,
+            data: sc,
             scene: scene,
             view: view
         };
@@ -126,7 +134,7 @@
     autorotateToggleElement.addEventListener('click', toggleAutorotate);
 
     // Set up fullscreen mode, if supported.
-    if (screenfull.enabled && data.settings.fullscreenButton) {
+    if (screenfull.enabled && data.settings.showFullscreen) {
         document.body.classList.add('fullscreen-enabled');
         fullscreenToggleElement.addEventListener('click', toggleFullscreen);
     } else {
@@ -162,7 +170,7 @@
     function updateSceneList(scene) {
         for (var i = 0; i < sceneElements.length; i++) {
             var el = sceneElements[i];
-            el.style.display = el.getAttribute('data-id') === scene.data.id ? 'none': 'block';
+            el.style.display = el.getAttribute('data-id') === scene.data.id ? 'none' : 'block';
         }
     }
 

@@ -2,7 +2,8 @@ var APP_DATA = {
     "scenes": [
         {
             "id": "01-bad",
-            "name": "01-bad",
+            "name": "Badezimmer",
+            "src": "01-bad.jpg",
             "initialViewParameters": {
                 "pitch": 0,
                 "yaw": 0,
@@ -19,7 +20,8 @@ var APP_DATA = {
         },
         {
             "id": "02-balkon",
-            "name": "02-balkon",
+            "name": "Balkon 1",
+            "src": "02-balkon.jpg",
             "initialViewParameters": {
                 "yaw": 1.5356456397617206,
                 "pitch": -0.009135926167793684,
@@ -38,18 +40,13 @@ var APP_DATA = {
                     "pitch": -0.009135926167793684,
                     "title": "Title",
                     "text": "Text"
-                },
-                {
-                    "yaw": 1.5356456397617206,
-                    "pitch": -0.009135926167793684,
-                    "title": "Title",
-                    "text": "Text"
                 }
             ]
         },
         {
             "id": "03-balkon",
-            "name": "03-balkon",
+            "name": "Balkon 2",
+            "src": "03-balkon.jpg",
             "initialViewParameters": {
                 "yaw": 1.5356456397617206,
                 "pitch": -0.009135926167793684,
@@ -69,21 +66,16 @@ var APP_DATA = {
                     "pitch": -0.009135926167793684,
                     "title": "Title",
                     "text": "Text"
-                },
-                {
-                    "yaw": 1.5356456397617206,
-                    "pitch": -0.009135926167793684,
-                    "title": "Title",
-                    "text": "Text"
                 }
             ]
         }
     ],
-    "name": "Project Title",
+    "name": "Marzipano Application",
     "settings": {
         "mouseViewMode": "drag",
-        "autorotateEnabled": true,
-        "fullscreenButton": true,
-        "viewControlButtons": false
+        "showNavigation": true,
+        "showAutorotate": true,
+        "showFullscreen": true,
+        "autorotateEnabled": true
     }
 };
