@@ -12,4 +12,3 @@ Run `./dev.sh` in root.
 
 To update S3 public bucket upload all files in `./public`.
 
-# 360-marzipano-app
