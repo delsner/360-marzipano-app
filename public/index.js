@@ -8,6 +8,8 @@
 
     // get dom elements
     var panoElement = document.querySelector('#pano');
+    var titleBarElement = document.querySelector('#titleBar');
+    var sceneListToggleElement = document.querySelector("#sceneListToggle");
     var sceneListElement = document.querySelector("#sceneList");
     var sceneNameElement = document.querySelector('#titleBar .sceneName');
     var sceneElements = document.querySelectorAll('#sceneList .scene');
@@ -16,6 +18,12 @@
 
     // set meta information
     document.title = data.name;
+
+    // hide elements based on settings
+    titleBarElement.style.display = data.settings.showNavigation ? 'block' : 'none';
+    sceneListToggleElement.style.display = data.settings.showSceneMenu ? 'block' : 'none';
+    autorotateToggleElement.style.display = data.settings.showAutorotate ? 'block' : 'none';
+    fullscreenToggleElement.style.display = data.settings.showFullscreen ? 'block' : 'none';
 
     // test event listeners
     panoElement.addEventListener('mousedown', function (e) {
@@ -36,7 +44,7 @@
     });
 
 
-    // Detect desktop or mobile mode.
+    // detect desktop or mobile mode
     if (window.matchMedia) {
         var setMode = function () {
             if (mql.matches) {
@@ -54,38 +62,38 @@
         document.body.classList.add('desktop');
     }
 
-    // Detect whether we are on a touch device.
+    // detect whether we are on a touch device
     document.body.classList.add('no-touch');
     window.addEventListener('touchstart', function () {
         document.body.classList.remove('no-touch');
         document.body.classList.add('touch');
     });
 
-    // Use tooltip fallback mode on IE < 11.
+    // use tooltip fallback mode on IE < 11
     if (bowser.msie && parseFloat(bowser.version) < 11) {
         document.body.classList.add('tooltip-fallback');
     }
 
-    // Viewer options.
+    // viewer options
     var viewerOpts = {
         controls: {
             mouseViewMode: data.settings.mouseViewMode
         }
     };
 
-    // Initialize viewer.
+    // initialize viewer
     var viewer = new Marzipano.Viewer(panoElement, viewerOpts);
 
-    // Create scenes.
+    // create scenes
     var scenes = data.scenes.map(function (sc) {
 
-        // Create source.
+        // create source
         var source = Marzipano.ImageUrlSource.fromString(sc.src);
 
-// Create geometry.
+        // create geometry
         var geometry = new Marzipano.EquirectGeometry([{width: 4000}]);
 
-// Create view.
+        // create view
         var limiter = Marzipano.RectilinearView.limit.traditional(1024, 100 * Math.PI / 180);
         var view = new Marzipano.RectilinearView({yaw: Math.PI}, limiter);
 
@@ -96,17 +104,19 @@
             pinFirstLevel: true
         });
 
-        // Create link hotspots.
+        // create link hotspots
         sc.linkHotspots.forEach(function (hotspot) {
             var element = createLinkHotspotElement(hotspot);
             scene.hotspotContainer().createHotspot(element, {yaw: hotspot.yaw, pitch: hotspot.pitch});
         });
 
-        // Create info hotspots.
+        // TODO create info hotspots
+        /*
         sc.infoHotspots.forEach(function (hotspot) {
             var element = createInfoHotspotElement(hotspot);
             scene.hotspotContainer().createHotspot(element, {yaw: hotspot.yaw, pitch: hotspot.pitch});
         });
+        */
 
         // add sceneListElements for list
         sceneListElement.insertAdjacentHTML('beforeend', '<li class="mdl-menu__item scene" data-id="' + sc.id + '">' + sc.name + '</li>');
@@ -119,36 +129,45 @@
         };
     });
 
-    // Set up autorotate, if enabled.
+    // set up autorotate, if enabled
     var autorotate = Marzipano.autorotate({
         yawSpeed: 0.03,
         targetPitch: 0,
         targetFov: Math.PI / 2
     });
 
+    // if autorotate is enabled, start rotation
     if (data.settings.autorotateEnabled) {
-        autorotateToggleElement.classList.add('enabled');
+        toggleAutorotate();
     }
 
-    // Set handler for autorotate toggle.
+    // set handler for autorotate toggle
     autorotateToggleElement.addEventListener('click', toggleAutorotate);
 
-    // Set up fullscreen mode, if supported.
+    // set up fullscreen mode, if supported
     if (screenfull.enabled && data.settings.showFullscreen) {
         document.body.classList.add('fullscreen-enabled');
         fullscreenToggleElement.addEventListener('click', toggleFullscreen);
+
+        // detect fullscreen change event
+        screenfull.on('change', function () {
+            if (screenfull.isFullscreen) {
+                fullscreenToggleElement.classList.add('mdl-button--colored');
+            } else {
+                fullscreenToggleElement.classList.remove('mdl-button--colored');
+            }
+        });
     } else {
         document.body.classList.add('fullscreen-disabled');
     }
 
-    // Set handler for scene switch.
+    // set handler for scene switch
     scenes.forEach(function (scene) {
         var el = document.querySelector('#sceneList .scene[data-id="' + scene.data.id + '"]');
         el.addEventListener('click', function () {
             switchScene(scene);
         });
     });
-
 
     function sanitize(s) {
         return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
@@ -199,31 +218,17 @@
 
     function toggleFullscreen() {
         screenfull.toggle();
-        if (screenfull.isFullscreen) {
-            fullscreenToggleElement.classList.remove('mdl-button--colored');
-        } else {
-            fullscreenToggleElement.classList.add('mdl-button--colored');
-        }
     }
 
     function createLinkHotspotElement(hotspot) {
-
         // Create wrapper element to hold icon and tooltip.
         var wrapper = document.createElement('div');
         wrapper.classList.add('hotspot');
         wrapper.classList.add('link-hotspot');
 
-        // Create image element.
-        var icon = document.createElement('img');
-        icon.src = 'img/link.png';
-        icon.classList.add('link-hotspot-icon');
-
-        // Set rotation transform.
-        var transformProperties = ['-ms-transform', '-webkit-transform', 'transform'];
-        for (var i = 0; i < transformProperties.length; i++) {
-            var property = transformProperties[i];
-            icon.style[property] = 'rotate(' + hotspot.rotation + 'rad)';
-        }
+        var div = document.createElement('div');
+        div.innerHTML = ('<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--primary link-hotspot-icon"><i class="material-icons" style="font-size: 36px; left: calc(50% - 6px);">keyboard_arrow_up</i></button>').trim();
+        var icon = div.firstChild;
 
         // Add click event handler.
         wrapper.addEventListener('click', function () {
@@ -319,7 +324,7 @@
         return wrapper;
     }
 
-    // Prevent touch and scroll events from reaching the parent element.
+    // prevent touch and scroll events from reaching the parent element
     function stopTouchAndScrollEventPropagation(element, eventList) {
         var eventList = ['touchstart', 'touchmove', 'touchend', 'touchcancel',
             'wheel', 'mousewheel'];
@@ -348,7 +353,7 @@
         return null;
     }
 
-    // Display the initial scene.
+    // display the initial scene
     switchScene(scenes[0]);
 
 })();
