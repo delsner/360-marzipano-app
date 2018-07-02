@@ -25,25 +25,6 @@
     autorotateToggleElement.style.display = data.settings.showAutorotate ? 'block' : 'none';
     fullscreenToggleElement.style.display = data.settings.showFullscreen ? 'block' : 'none';
 
-    // test event listeners
-    panoElement.addEventListener('mousedown', function (e) {
-        var pressPosition = {x: e.clientX, y: e.clientY};
-        console.log(pressPosition);
-        var scene = viewer.scene(); // get the current scene
-        var view = scene.view();    // get the scene's view
-
-        var yaw = view.yaw();
-        var pitch = view.pitch();
-        var fov = view.fov();      // fov is horizontal
-        console.log({yaw: yaw, pitch: pitch, fov: fov});
-
-        var coordinates = view.screenToCoordinates(pressPosition);
-
-        console.log(coordinates);
-
-    });
-
-
     // detect desktop or mobile mode
     if (window.matchMedia) {
         var setMode = function () {

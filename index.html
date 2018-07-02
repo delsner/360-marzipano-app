@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>360 App</title>
+    <meta name="description" content="360 Application"/>
+    <meta name="viewport"
+          content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui"/>
+    <style>@-ms-viewport {
+        width: device-width;
+    }</style>
+    <link rel="stylesheet" href="https://s3.eu-central-1.amazonaws.com/360-public/material.min.css">
+    <link rel="stylesheet" href="https://s3.eu-central-1.amazonaws.com/360-public/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+</head>
+<body>
+
+<div id="spinner" class="mdl-spinner mdl-js-spinner is-active"></div>
+
+<div id="pano"></div>
+
+<ul id="sceneList" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect scenes"
+    for="sceneListToggle">
+</ul>
+
+<div id="titleBar">
+    <button id="sceneListToggle"
+            class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">more_vert</i>
+    </button>
+    <h4 class="sceneName"></h4>
+    <button id="autorotateToggle" class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">360</i>
+    </button>
+
+    <button id="fullscreenToggle" class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">fullscreen</i>
+    </button>
+</div>
+
+<script src="https://s3.eu-central-1.amazonaws.com/360-public/jquery-3.3.1.min.js"></script>
+<script src="https://s3.eu-central-1.amazonaws.com/360-public/material.min.js"></script>
+<script src="https://s3.eu-central-1.amazonaws.com/360-public/es5-shim.js"></script>
+<script src="https://s3.eu-central-1.amazonaws.com/360-public/eventShim.js"></script>
+<script src="https://s3.eu-central-1.amazonaws.com/360-public/classList.js"></script>
+<script src="https://s3.eu-central-1.amazonaws.com/360-public/requestAnimationFrame.js"></script>
+<script src="https://s3.eu-central-1.amazonaws.com/360-public/screenfull.min.js"></script>
+<script src="https://s3.eu-central-1.amazonaws.com/360-public/bowser.min.js"></script>
+<script src="https://s3.eu-central-1.amazonaws.com/360-public/marzipano.js"></script>
+
+<script src="data.js"></script>
+<script src="https://s3.eu-central-1.amazonaws.com/360-public/index.js"></script>
+
+</body>
+</html>
