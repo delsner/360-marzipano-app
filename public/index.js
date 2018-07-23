@@ -72,7 +72,7 @@
         var source = Marzipano.ImageUrlSource.fromString(sc.src);
 
         // create geometry
-        var geometry = new Marzipano.EquirectGeometry([{width: 6000}]);
+        var geometry = new Marzipano.EquirectGeometry([{width: 4000}]);
 
         // create view
         var limiter = Marzipano.RectilinearView.limit.traditional(1024, 100 * Math.PI / 180);
